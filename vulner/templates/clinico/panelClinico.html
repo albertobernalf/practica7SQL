@@ -1,0 +1,281 @@
+{% extends "clinico/menuMedico.html" %}
+{% load static %}
+
+{% block content %}
+<script src={% static 'js/panelClinico.js' %} defer >         </script>
+<!--
+ <script>
+ window.onload = function(){
+  var fecha = new Date(); //Fecha actual
+  var mes = fecha.getMonth()+1; //obteniendo mes
+  var dia = fecha.getDate(); //obteniendo dia
+  var ano = fecha.getFullYear(); //obteniendo año
+  if(dia<10)
+    dia='0'+dia; //agrega cero si el menor de 10
+  if(mes<10)
+    mes='0'+mes //agrega cero si el menor de 10
+  document.getElementById('busDesde').value=ano+"-"+mes+"-"+dia;
+  document.getElementById('busHasta').value=ano+"-"+mes+"-"+dia;
+}
+</script>
+-->
+
+
+
+
+<!-- <div class="container">  -->
+</hr>
+
+<div class="row justify-content-center">
+
+    <div class="col-lg-12" style="background-color:LightGray;">
+        <div class="card-block">
+            <div style="height: 100px; ">
+                <!--  <table class="table  " style="height: 100px; background-color:LightGray; border: 2px solid black; border-radius: 100px; width:99%;"> -->
+                <!--  <tr > -->
+                <!-- iNGRESAR UN FORMULARIO AQUIP -->
+                <!--   <div class="container"> -->
+                <form class="form-inline" action="/buscarAdmisionClinico/" method="post" id="FormBuscarClinico"><input
+                        type="hidden"
+                        name="csrfmiddlewaretoken"
+                        value="MJ1CwN7LHRoBZUnyQoPpHBnb4M3PwGYmsLJeNsN92l41zY9ZaUPztrhcMWyUTHxc">
+                    <div class="row justify-content-center">
+                    </div>
+
+                    <div class="row justify-content-center">
+                        <div class="form-group">
+
+                            <label for="busServicio" class="col-form-label">Servicios:</label>
+                            <select id="busServicio" name="busServicio">
+                                {% for servicios in Servicios %}
+                                <option value="{{servicios.id}}"> {{servicios.nombre}}</option>
+                                {% endfor %}
+                            </select>
+
+                            <label for="busSubServicio" class="col-form-label">SubServicios:</label>
+                            <select id="busSubServicio" name="busSubServicio">
+                                {% for subServicios in SubServicios %}
+                                <option value="{{subServicios.id}}"> {{subServicios.nombre}}</option>
+                                {% endfor %}
+                            </select>
+
+                            <label for="busHabitacion" class="col-form-label">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Habitacion:</label>
+                            <select id="busHabitacion" name="busHabitacion">
+                                {% for habitaciones in Habitaciones %}
+                                <option value="{{habitaciones.id}}"> {{habitaciones.nombre}}</option>
+                                {% endfor %}
+                            </select>
+
+
+                            <label for="busTipoDoc"
+                                   class="col-form-label">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;TipoDoc:</label>
+                            <select id="busTipoDoc" name="busTipoDoc">
+                                {% for tiposDoc in TiposDoc %}
+                                <option value="{{tiposDoc.id}}"> {{tiposDoc.nombre}}</option>
+                                {% endfor %}
+                            </select>
+
+                            <label class="required"
+                                   for="busDocumento">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Documento:</label>
+
+                            <input type="text" id="busDocumento" name="busDocumento"></input>
+
+                            <label class="required"
+                                   for="busPaciente">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Paciente:</label>
+
+                            <input type="text" id="busPaciente" name="busPaciente"></input>
+
+
+                        </div>
+
+                    </div>
+
+                    <div class="row justify-content-center">
+
+                        <div class="form-group">
+                            <label class="required" for="busDesde">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Desde:&nbsp;&nbsp;&nbsp;</label>
+
+                            <input type="datetime-local" id="busDesde" name="busDesde"></input>
+
+                            <label class="required" for="busHasta"> &nbsp;&nbsp;&nbsp;Hasta:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</label>
+
+                            <input type="datetime-local" id="busHasta" name="busHasta"></input>
+
+                            <label for="busEspecialidad" class="col-form-label">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Especialidad:
+                                &nbsp;&nbsp;&nbsp;</label>
+                            <select id="busEspecialidad" name="busEspecialidad">
+                                {% for especialidades in Especialidades %}
+                                <option value="{{especialidades.id}}"> {{especialidades.nombre}}</option>
+                                {% endfor %}
+                            </select>
+
+                            <label for="busMedico" class="col-form-label"> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Medico: &nbsp;&nbsp;&nbsp;</label>
+
+                            <select id="busMedico" name="busMedico">
+                                {% for medico in Medicos %}
+                                <option value="{{medico.id}}"> {{medico.nombre}}</option>
+                                {% endfor %}
+                            </select>
+
+                        </div>
+
+
+                    </div>
+
+                    <div class="form-group">
+
+
+                        <input type="hidden" id="Sede" name="Sede" value="{{Sede}}">
+                        <input type="hidden" id="Servicio" name="Servicio" value="{{Servicio}}">
+                        <input type="hidden" id="Perfil" name="Perfil" value="{{Perfil}}">
+                        <input type="hidden" id="Username" name="Username" value="{{Username}}">
+                        <input type="hidden" id="Username_id" name="Username_id" value="{{Username_id}}">
+
+                        <input type="hidden" id="nombreSede" name="nombreSede" value="{{NombreSede}}">
+                    </div>
+
+
+                    <span id="error" name="error" style="color:blue">{{Error}}</span>
+
+
+                    <div class="submit-row">
+                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                        <input type="submit" value="BUSCAR PACIENTES">
+                    </div>
+                </form>
+                <!--   <div/> -->
+                <!--    <tr /> -->
+
+                <!-- fim formulario -->
+
+
+                <!--    </table>  -->
+            </div>
+            </hr>
+
+
+        </div>
+
+    </div>
+
+</div>
+
+<div class="row">
+    <div class="col-lg-12" style="background-color:LightGray;">
+
+
+        <div class="card-block">
+            <div style="height: 600px; overflow: auto">
+                <table class="table table-hover" id="tablaClinico"
+                       style="height: 600px , background-color:LightGray; border: 2px solid black; border-radius: 10px; width:99%;">
+                    <thead>
+                    <th>Tipo Doc</th>
+                    <th>Documento</th>
+                    <th>Paciente</th>
+                    <th>Ingreso</th>
+                    <th>Fec.Ingreso</th>
+                    <th>Fec.Salida</th>
+                    <th>Servicio</th>
+                    <th>Dependencia</th>
+                    <th>Dx</th>
+
+
+                    </thead>
+                    {% for ingresos in Ingresos %}
+                    <tr>
+                        <td>{{ ingresos.tipoDoc }}</td>
+                        <td>{{ ingresos.Documento }}</td>
+                        <td>{{ ingresos.Nombre }}</td>
+                        <td>{{ ingresos.Consec }}</td>
+                        <td>{{ ingresos.FechaIngreso }}</td>
+                        <td>{{ ingresos.FechaSalida }}</td>
+                        <td>{{ ingresos.servicioNombreIng }}</td>
+                        <td>{{ ingresos.camaNombreIng }}</td>
+                        <td>{{ ingresos.DxActual }}</td>
+                    </tr>
+                    {% endfor %}
+                    <tbody>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+
+<div class="row">
+    <div class="col-lg-12" style="background-color:LightGray;">
+        <div class="card-block">
+            <div style="height: 150px; overflow: auto">
+
+                 <form class="form-inline" action="/crearHistoriaClinica/" method="GET" id="formCargaHc">
+                    <table class="table " id="tablaClinicobottom"
+                           style="height: 100px, background-color:LightGray; border: 2px solid black; border-radius: 10px;width:99%;">
+                        <tr>
+
+                        </tr>
+
+                        <tr>
+
+                            <input type="hidden" id="Sede" name="Sede" value="{{Sede}}">
+                            <input type="hidden" id="Servicio" name="Servicio" value="{{Servicio}}">
+                            <input type="hidden" id="Perfil" name="Perfil" value="{{Perfil}}">
+                            <input type="hidden" id="Username" name="Username" value="{{Username}}">
+                            <input type="hidden" id="Username_id" name="Username_id" value="{{Username_id}}">
+                            <input type="hidden" id="nombreSede" name="nombreSede" value="{{NombreSede}}">
+
+                            <input type="hidden" id="TipoDocPaciente" name="TipoDocPaciente" value="">
+                            <input type="hidden" id="DocumentoPaciente" name="DocumentoPaciente" value="">
+                            <input type="hidden" id="IngresoPaciente" name="IngresoPaciente" value="">
+                            <input type="hidden" id="tiposFolio" name="tiposFolio" value="1">
+                            <input type="hidden" id="profesional" name="profesional" value="{{Profesional}}">
+
+
+
+                            <td>Profesional : {{Username}} {{Profesional}}  </td>
+                            <td>Especialidad : </td>
+                            <td>
+                                <label for="espMedico" class="col-form-label"> &nbsp;&nbsp;&nbsp;&nbsp;
+                                    &nbsp;&nbsp;&nbsp;</label>
+                                <select id="espMedico" name="espMedico">
+                                    {% for especialidadesMedicos in EspecialidadesMedicos %}
+                                    <option value="{{especialidadesMedicos.id}}"> {{especialidadesMedicos.nombre}}
+                                    </option>
+                                    {% endfor %}
+                                </select>
+
+
+                            </td>
+<!--
+                            <td>Tipo de Folio : </td>
+
+                             <td>
+                                <label for="tiposFolio" class="col-form-label"> </label>
+                                <select id="tiposFolio" name="tiposFolio">
+                                    {% for tiposFolio in TiposFolio %}
+                                    <option value="{{tiposFolio.id}}"> {{tiposFolio.nombre}}    </option>
+                                    {% endfor %}
+                                </select>
+                            </td>
+-->
+
+
+
+                            <td>
+                            <!--    <input type="submit" id="btnCargaHc1" name="btnCargaHc1" value="Crear Folio"></input> -->
+                            </td>
+
+
+                        </tr>
+
+                    </table>
+                 </form>
+            </div>
+            </hr>
+        </div>
+    </div>
+</div>
+
+{% endblock %}
+

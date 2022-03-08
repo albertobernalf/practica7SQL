@@ -1,0 +1,534 @@
+{% extends "clinico/menuMedico1.html" %}
+{% load static %}
+
+{% block head %}
+<!-- Custom css -->
+<link rel="stylesheet" type="text/css" href={% static 'css/navegacionClinica.css' %} >
+<link rel="stylesheet" type="text/css" href={% static 'css/fontawesome.css' %} >
+<script src="https://kit.fontawesome.com/5d0337a043.js" crossorigin="anonymous"></script>
+<script src={% static 'js/navegacionClinica.js' %} defer >         </script>
+<script src={% static 'js/navegacionTabsClinica.js' %} defer> </script>
+
+<div class="wrap">
+    <ul class="tabs">
+
+        <li><a href="#Evoluciones"><span class="fa-solid fa-user-doctor-message"></span> <span class="tab-text"> </span>Consulta
+            - evolucion
+        </a></li>
+        <li><a href="#CausaExterna"><span class="fa-solid fa-truck-medical"></span> <span class="tab-text"> </span>CausaExterna
+        </a>
+        </li>
+        <li><a href="#SignosVitales"><span class="fa-solid fa-wave-pulse"></span> <span class="tab-text"> </span>Signos
+            Vitales
+        </a>
+        </li>
+
+        <li><a href="#Laboratorios"><span class="fa-solid fa-bong"></span> <span class="tab-text"> </span>Laboratorios
+        </a>
+        </li>
+        <li><a href="#Radiologia"><span class="fa fa-house-medical"></span> <span class="tab-text"> </span>Radiologia
+        </a></li>
+        <li><a href="#Terapias"> <span class="fa-solid fa-user-nurse-hair-long"></span> <span class="tab-text"> </span>Terapias
+        </a></li>
+        <li><a href="#Formulacion"><span class="fa-solid fa-hand-holding-medical"></span> <span
+                class="tab-text"> </span>Formulacion </a></li>
+
+    </ul>
+</div>
+
+
+{% endblock %}
+
+{% block paciente  %}
+
+{% for datosPaciente in DatosPaciente %}
+<div class="paciente">
+    <input type="hidden" id="espMedico" name="espMedico" value="{{espMedico}}"> </input>
+    <input type="hidden" id="tiposFolio" name="tiposFolio" value="1"> </input>
+    <input type="hidden" id="usuarioRegistro" name="usuarioRegistro" value="{{Username_id}}"> </input>
+    <input type="hidden" id="perfil" name="perfil" value="{{perfil}}"> </input>
+    <input type="hidden" id="profesional" name="profesional" value="{{Profesional}}"> </input>
+    <input type="hidden" id="fechaRegistro" name="fechaRegistro" value=""> </input>
+
+    <div class="form-row">
+        <div class="form-group col-md-3 ">
+            TIPO DOCUMENTO:
+            {{ datosPaciente.tipnombre}}
+            <input type="hidden" id="tipoDoc_id" name="tipoDoc_id" value="{{ datosPaciente.tipoDoc_id}}"
+                   readonly></input>
+        </div>
+
+        <div class="form-group col-md-3 ">
+            No:
+            {{ datosPaciente.documentoPaciente}}
+
+            <input type="hidden" id="documentoPaciente" name="documentoPaciente"
+                   value="{{ datosPaciente.documentoPaciente}}" readonly></input>
+        </div>
+        <div class="form-group col-md-3 ">
+            NOMBRE:
+            {{ datosPaciente.nombre}}
+        </div>
+        <div class="form-group col-md-1 ">
+            INGRESO:
+            {{ IngresoPaciente}}
+            <input type="hidden" id="IngresoPaciente" name="IngresoPaciente" value="{{ IngresoPaciente}}"
+                   readonly></input>
+            <input type="hidden" class="form-control" id="fecha" name="fecha" value={{ form.fecha }}>
+
+        </div>
+
+        <div class="form-group col-md-2">
+            GENERO:
+            {{ datosPaciente.genero}}
+
+        </div>
+    </div>
+
+    <div class="form-row">
+        <div class="form-group col-md-2 ">
+            ORIGEN:
+            {{ datosPaciente.centro}}
+        </div>
+
+        <div class="form-group col-md-2 ">
+            TIPO:
+            {{ datosPaciente.tipoUsuario}}
+        </div>
+        <div class="form-group col-md-2 ">
+            DIRECCION:
+            {{ datosPaciente.direccion}}
+        </div>
+        <div class="form-group col-md-2 ">
+            TELEFONO:
+            {{ datosPaciente.telefono}}
+
+        </div>
+
+        <div class="form-group col-md-2 ">
+            DEPENDENCIA :
+
+
+            <select class="form-control" id="dependenciasRealizado" name="dependenciasRealizado">
+                {% for dependenciasRealizado in DependenciasRealizado %}
+                <option value="{{dependenciasRealizado.id}}"> {{dependenciasRealizado.nombre}}</option>
+                {% endfor %}
+            </select>
+
+        </div>
+
+        <div class="form-group col-md-2 ">
+            Profesional que Atiende:
+            {{ Profesional}}
+
+        </div>
+
+    </div>
+</div>
+{% endfor %}
+
+
+{% endblock %}
+
+{% block content %}
+
+<div class="secciones">
+    <article id="Evoluciones">
+
+        <center><h3>Consulta - Evoluciones</h3></center>
+        <div class="form-row">
+            <div class="form-group col-md-4 ">
+                {{ historiaForm.motivo.label }}
+                {{ historiaForm.motivo }}
+            </div>
+
+            <div class="form-group col-md-4 ">
+                {{ historiaForm.objetivo.label }}
+                {{ historiaForm.objetivo }}
+            </div>
+            <div class="form-group col-md-4 ">
+                {{ historiaForm.subjetivo.label }}
+                {{ historiaForm.subjetivo }}
+            </div>
+        </div>
+        <div class="form-row">
+            <div class="form-group col-md-6 ">
+                {{ historiaForm.analisis.label }}
+                {{ historiaForm.analisis }}
+            </div>
+
+            <div class="form-group col-md-6 ">
+                {{ historiaForm.plan.label }}
+                {{ historiaForm.plan }}
+            </div>
+
+        </div>
+    </article>
+
+    <article id="CausaExterna">
+        <center>
+            <h3>Causas Externas</h3>
+        </center>
+
+
+        <div class="form-row">
+            <div class="form-group col-md-3 ">
+                <label for="causasExterna" class="col-form-label"></label>
+                <center>
+                    <select class="form-control" id="causasExterna" name="causasExterna">
+                        {% for causasExterna in CausasExterna %}
+                        <option value="{{causasExterna.id}}"> {{causasExterna.nombre}}</option>
+                        {% endfor %}
+                    </select>
+                </center>
+            </div>
+        </div>
+
+
+    </article>
+
+
+    <article id="SignosVitales">
+        <center>
+            <h3>Signos Vitales</h3>
+        </center>
+
+    </article>
+
+
+    <article id="Laboratorios">
+        <center><h3>Ordenes de Laboratorios</h3></center>
+        <center>
+            <div class="form-row">
+
+
+                <div class="form-group col-md-12 ">
+                    <form action="" method="post" id="formCabezoteLab" name="formCabezoteLab">
+                        Observaciones: {{ HistoriaExamenesCabezoteForm.observaciones }}
+
+                        <input type="hidden" id="historia" name="historia" value=""> </input>
+                        <input type="hidden" id="tiposExamen" name="tiposExamen" value="2"> </input>
+
+
+                        <input type="hidden" id="estadoReg" name="estadoReg" value="A"> </input>
+
+
+                    </form>
+                </div>
+            </div>
+
+
+            <div class="form-row">
+                <div class="form-group col-md-3 ">
+
+                    <label for="tipoExamenLab" class="col-form-label"></label>
+                    <input type="hidden" class="form-control" id="tipoExamenLab" name="tipoExamenLab"
+                           value="{{TipoExamenLab}}">
+
+                </div>
+
+
+                <div class="form-group col-md-3 ">
+                    <label for="laboratorios1" class="col-form-label">Laboratorios:</label>
+                    <select class="form-control" id="laboratorios1" name="laboratorios1">
+                        {% for laboratorios in Laboratorios %}
+                        <option value="{{laboratorios.id}}"> {{laboratorios.nombre}}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+                <div class="form-group col-md-3 ">
+                    <label for="cantidad" class="col-form-label">Cantidad:</label>
+                    <input type="text" class="form-control" id="cantidad" name="cantidad">
+                </div>
+                <div class="form-group col-md-3 ">
+                    <label for="btnAdicExamenLab" class="col-form-label">Agregar:</label>
+                    <input type="button" id="btnAdicExamenLab" value="Adicionar"/>
+                </div>
+            </div>
+
+
+        </center>
+        <div class="container">
+            <div id="tablas" class="scrollable">
+                <center>
+                    <table cellspacing="0" width="100%" class="table  table-fixed " id="tablaExamenes">
+
+                        <thead>
+                        <tr>
+                            <th data-visible="false"></th>
+                            <!-- <th style="width:40%">Tipo Examen</th> -->
+                            <th style="width:40%">Examen</th>
+                            <th style="width:10%">Cantidad</th>
+                            <th class="col-xs-1"> BORRAR</th>
+
+                            <!--       <th data-visible="false"></th>
+                                 <th data-visible="false"></th>  -->
+
+                        </tr>
+                        </thead>
+                        <tfoot>
+                        </tfoot>
+                    </table>
+                </center>
+            </div>
+        </div>
+
+
+    </article>
+
+    <article id="Radiologia">
+
+        <center><h3>Ordenes de Radiologia</h3></center>
+        <!--    <form action="" method="post" id="formRadiologias" name="formRadiologias">  -->
+        <center>
+
+            <div class="form-row">
+
+
+                <div class="form-group col-md-12 ">
+                    <form action="" method="post" id="formCabezoteRad" name="formCabezoteRad">
+                        Observaciones: {{ HistoriaExamenesCabezoteForm.observaciones }}
+
+                        <input type="hidden" id="historia" name="historia" value=""> </input>
+                        <input type="hidden" id="tiposExamen" name="tiposExamen" value="2"> </input>
+                        <input type="hidden" id="estadoReg" name="estadoReg" value="A"> </input>
+
+
+                    </form>
+                </div>
+            </div>
+
+
+            <div class="form-row">
+                <div class="form-group col-md-3 ">
+
+                    <label for="tipoExamenRad" class="col-form-label">Tipo De Examen:</label>
+                    <input type="hidden" class="form-control" id="tipoExamenRad" name="tipoExamenRad"
+                           value="{{TipoExamenRad}}">
+
+                </div>
+
+                <div class="form-group col-md-3 ">
+                    <label for="radiologias1" class="col-form-label">Radiologia:</label>
+                    <select class="form-control" id="radiologias1" name="radiologias1"
+                    >
+                        {% for radiologias in Radiologias %}
+                        <option value="{{radiologias.id}}"> {{radiologias.nombre}}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+                <div class="form-group col-md-3 ">
+                    <label for="cantidad" class="col-form-label">Cantidad:</label>
+                    <input type="text" class="form-control" id="cantidad" name="cantidad">
+                </div>
+                <div class="form-group col-md-3 ">
+                    <label for="btnAdicExamenRad" class="col-form-label">Agregar:</label>
+                    <input type="button" id="btnAdicExamenRad" value="Adicionar"/>
+                </div>
+            </div>
+
+        </center>
+        <div class="container">
+            <div id="noTomar" class="scrollable">
+                <center>
+                    <table cellspacing="0" width="100%"  class="table  table-fixed " id="tablaExamenesRad">
+
+                        <thead>
+                        <tr>
+
+                            <th data-visible="false"></th>
+                            <th style="width:40%">Examen</th>
+                            <th style="width:10%">Cantidad</th>
+                            <th class="col-xs-1"> BORRAR</th>
+
+
+                        </tr>
+                        </thead>
+                        <tfoot>
+                        </tfoot>
+                    </table>
+                </center>
+            </div>
+        </div>
+
+
+    </article>
+
+
+    <article id="Terapias">
+        <center><h3>Terapias</h3></center>
+    </article>
+
+    <article id="Formulacion">
+        <center><h3>Formulacion</h3></center>
+    </article>
+
+    <article id="Cirugias">
+        <center><h3>Cirugias</h3></center>
+    </article>
+    <article id="ProcedimientosNoQx">
+        <center><h3>ProcedimientosNoQx</h3></center>
+    </article>
+
+    <article id="Diagnosticos">
+        <h3>Diagnosticos</h3>
+
+        <div class="form-row">
+
+            <div class="form-group col-md-12 ">
+                <form action="" method="post" id="formCabezoteDiadnosticos" name="formCabezoteDiadnosticos">
+                    <center>
+                        Observaciones: {{ HistorialDiagnosticosCabezoteForm.observaciones }}
+
+                        <input type="hidden" id="documento" name="documento" value="">
+                        <input type="hidden" id="tipoDoc" name="tipoDoc" value="">
+                        <input type="hidden" id="consecAdmision" name="consecAdmision" value="">
+                        <input type="hidden" id="folio" name="folio" value="">
+
+                        <input type="hidden" id="estadoReg" name="estadoReg" value="A">
+                    </center>
+
+                </form>
+            </div>
+        </div>
+
+
+        <div class="form-row">
+
+
+            <div class="form-group col-md-4 ">
+                <label for="diagnosticos" class="col-form-label">Diagnosticos:</label>
+
+
+                <select class="form-control" id="diagnosticos" name="diagnosticos">
+                    {% for diagnosticos in Diagnosticos %}
+                    <option value="{{diagnosticos.id}}"> {{diagnosticos.nombre}}</option>
+                    {% endfor %}
+                </select>
+            </div>
+
+            <div class="form-group col-md-4 ">
+
+                <label for="tiposDiagnostico" class="col-form-label">Tipos Diagnostico: </label>
+                <<select class="form-control" id="tiposDiagnostico" name="tiposDiagnostico">
+                {% for tiposDiagnostico in TiposDiagnostico %}
+                <option value="{{tiposDiagnostico.id}}"> {{tiposDiagnostico.nombre}}</option>
+                {% endfor %}
+            </select>
+            </div>
+
+
+            <div class="form-group col-md-4 ">
+                <label for="btnAdicDiagnosticos" class="col-form-label">Agregar:</label>
+                <input type="button" id="btnAdicDiagnosticos" value="Adicionar">
+            </div>
+        </div>
+
+
+        <div class="container">
+            <div id="noTomar" class="scrollable">
+                <center>
+                    <table cellspacing="0" width="100%" class="table  table-fixed "
+                           id="tablaDiagnosticos">
+
+                        <thead>
+                        <tr>
+                            <th style="width:40%">Tipo Diagnsotico</th>
+                            <th style="width:40%">Diagnostico</th>
+                            <!--  <th style="width:10%">Cantidad</th> -->
+                            <th class="col-xs-1"> BORRAR</th>
+
+                        </tr>
+                        </thead>
+                        <tfoot>
+                        </tfoot>
+                    </table>
+                </center>
+            </div>
+        </div>
+
+    </article>
+
+    <article id="Antecedentes">
+        <center><h3>Antecedentes</h3></center>
+    </article>
+
+    <article id="Incapacidades">
+        <center><h3>Incapacidades</h3></center>
+    </article>
+
+    <article id="InterConsultas">
+        <center><h3>CInterConsultas</h3></center>
+    </article>
+
+    <article id="SalidaClinica">
+        <center><h3>SalidaClinica</h3></center>
+    </article>
+
+    <article id="GuardarFolio">
+        <center><h3>GuardarFolio</h3></center>
+
+        <form class="form-inline" action="" method="POST" id="formHistoriaClinica">
+
+            <input type="submit" id="btnCrearFolio" name="btnCrearFolio" value="Crear Folio"> </input>
+
+            <span id="mensajes" name="mensajes">Aqui mensajes </span>
+
+
+        </form>
+
+    </article>
+
+    <article id="Retornar">
+        <center><h3>Retornar</h3></center>
+
+        <form class="form-inline" action="/cargaPanelMedico/" method="POST" id="formRetornaHistoria">
+            <input type="submit" id="btnRetornaHistoria" name="btnRetornaHistoria" value="RETORNAR"> </input>
+
+            <input type="hidden" id="Sede" name="Sede" value="{{Sede}}">
+            <input type="hidden" id="Servicio" name="Servicio" value="{{Servicio}}">
+            <input type="hidden" id="Perfil" name="Perfil" value="{{Perfil}}">
+            <input type="hidden" id="Username" name="Username" value="{{Username}}">
+            <input type="hidden" id="Username_id" name="Username_id" value="{{Username_id}}">
+            <input type="hidden" id="nombreSede" name="nombreSede" value="{{NombreSede}}">
+
+
+            <input type="hidden" id="TipoDocPaciente" name="TipoDocPaciente" value="">
+            <input type="hidden" id="DocumentoPaciente" name="DocumentoPaciente" value="">
+            <input type="hidden" id="IngresoPaciente" name="IngresoPaciente" value="">
+
+
+        </form>
+    </article>
+
+
+</div>
+
+
+{% endblock %}
+
+{% block footer %}
+<div class="wrap">
+    <ul class="tabs">
+
+        <li><a href="#Cirugias"><span class="fa fa-home"></span> <span class="tab-text"> </span>Cirugias </a></li>
+        <li><a href="#ProcedimientosNoQx"><span class="fa fa-home"></span> <span class="tab-text"> </span>ProcedimientosNoQx
+        </a></li>
+        <li><a href="#Diagnosticos"><span class="fa fa-home"></span> <span class="tab-text"> </span>Diagnosticos </a>
+        </li>
+        <li><a href="#Antecedentes"><span class="fa fa-home"></span> <span class="tab-text"> </span>Antecedentes </a>
+        </li>
+        <li><a href="#Incapacidades"><span class="fa-solid fa-wheelchair-move"></span> <span class="tab-text"> </span>Incapacidades
+        </a>
+        </li>
+        <li><a href="#InterConsultas"><span class="fa fa-home"></span> <span class="tab-text"> </span>InterConsultas
+        </a></li>
+        <li><a href="#SalidaClinica"><span class="fa fa-home"></span> <span class="tab-text"> </span>SalidaClinica </a>
+        </li>
+        <li><a href="#GuardarFolio"><span class="fa fa-home"></span> <span class="tab-text"> </span>GuardarFolio </a>
+        </li>
+        <li><a href="#Retornar"><span class="fa fa-home"></span> <span class="tab-text"> </span>Retornar
+        </a></li>
+    </ul>
+</div>
+{% endblock %}

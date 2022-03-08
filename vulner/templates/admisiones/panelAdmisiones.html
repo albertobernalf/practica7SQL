@@ -1,0 +1,695 @@
+{% extends "admisiones/menuAdmisiones.html" %}
+{% load static %}
+
+{% block head %}
+
+
+<link rel="stylesheet" type="text/css" href={% static 'css/panelAdmisiones.css' %} >
+<link rel="stylesheet" type="text/css" href={% static 'css/fontawesome.css' %} >
+<script src={% static 'js/panelTabsAdmisiones.js' %} defer >         </script>
+<script src="https://kit.fontawesome.com/5d0337a043.js" crossorigin="anonymous"></script>
+
+<style>
+th ,tr{
+  border-style:solid;
+  border-color: #96D4D4;
+}
+
+
+
+</style>
+
+
+<div class="wrap">
+    <ul class="tabs">
+        <li><a href="#Ingresos"><span class="fa-solid fa-user-doctor-message"></span> <span class="tab-text"> </span>
+            Ingresos Clinicos </a></li>
+    </ul>
+</div>
+
+
+{% endblock %}
+
+
+{% block content %}
+
+<div class="secciones">
+    <article id="Ingresos">
+
+        <!-- Inicioo Table -->
+
+        <center><h3>Ingresos Pacientes</h3></center>
+
+             <div class="row justify-content-center">
+
+            <div class="col-lg-12" style="background-color:LightGray;">
+                <div class="card-block">
+                    <div style="height: 100px; ">
+                        <!--  <table class="table  " style="height: 100px; background-color:LightGray; border: 2px solid black; border-radius: 100px; width:99%;"> -->
+                        <!--  <tr > -->
+                        <!-- iNGRESAR UN FORMULARIO AQUIP -->
+                        <!--   <div class="container"> -->
+                        <form class="form-inline" action="/buscarAdmision/" method="post" id="FormBuscar"><input
+                                type="hidden"
+                                name="csrfmiddlewaretoken"
+                                value="MJ1CwN7LHRoBZUnyQoPpHBnb4M3PwGYmsLJeNsN92l41zY9ZaUPztrhcMWyUTHxc">
+                            <div class="row justify-content-center">
+                            </div>
+
+                            <div class="row justify-content-center">
+                                <div class="form-group">
+
+                                    <label for="busServicio" class="col-form-label">Servicios:</label>
+                                    <select id="busServicio" name="busServicio">
+                                        {% for servicios in Servicios %}
+                                        <option value="{{servicios.id}}"> {{servicios.nombre}}</option>
+                                        {% endfor %}
+                                    </select>
+
+                                    <label for="busSubServicio" class="col-form-label">SubServicios:</label>
+                                    <select id="busSubServicio" name="busSubServicio">
+                                        {% for subServicios in SubServicios %}
+                                        <option value="{{subServicios.id}}"> {{subServicios.nombre}}</option>
+                                        {% endfor %}
+                                    </select>
+
+                                    <label for="busHabitacion" class="col-form-label">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Habitacion:</label>
+                                    <select id="busHabitacion" name="busHabitacion">
+                                        {% for habitaciones in Habitaciones %}
+                                        <option value="{{habitaciones.id}}"> {{habitaciones.nombre}}</option>
+                                        {% endfor %}
+                                    </select>
+
+
+                                    <label for="busTipoDoc"
+                                           class="col-form-label">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;TipoDoc:</label>
+                                    <select id="busTipoDoc" name="busTipoDoc">
+                                        {% for tiposDoc in TiposDoc %}
+                                        <option value="{{tiposDoc.id}}"> {{tiposDoc.nombre}}</option>
+                                        {% endfor %}
+                                    </select>
+
+                                    <label class="required"
+                                           for="busDocumento">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Documento:</label>
+
+                                    <input type="text" id="busDocumento" name="busDocumento"></input>
+
+                                    <label class="required"
+                                           for="busPaciente">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Paciente:</label>
+
+                                    <input type="text" id="busPaciente" name="busPaciente"></input>
+
+
+                                </div>
+
+                            </div>
+
+                            <div class="row justify-content-center">
+
+                                <div class="form-group">
+                                    <label class="required" for="busDesde">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Desde:&nbsp;&nbsp;&nbsp;</label>
+
+                                    <input type="datetime-local" id="busDesde" name="busDesde"></input>
+
+                                    <label class="required" for="busHasta"> &nbsp;&nbsp;&nbsp;Hasta:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</label>
+
+                                    <input type="datetime-local" id="busHasta" name="busHasta"></input>
+
+                                    <label for="busEspecialidad" class="col-form-label">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Especialidad:
+                                        &nbsp;&nbsp;&nbsp;</label>
+                                    <select id="busEspecialidad" name="busEspecialidad">
+                                        {% for especialidades in Especialidades %}
+                                        <option value="{{especialidades.id}}"> {{especialidades.nombre}}</option>
+                                        {% endfor %}
+                                    </select>
+
+                                    <label for="busMedico" class="col-form-label"> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Medico:
+                                        &nbsp;&nbsp;&nbsp;</label>
+
+                                    <select id="busMedico" name="busMedico">
+                                        {% for medico in Medicos %}
+                                        <option value="{{medico.id}}"> {{medico.nombre}}</option>
+                                        {% endfor %}
+                                    </select>
+
+                                </div>
+
+
+                            </div>
+
+                            <div class="form-group">
+
+
+                                <input type="hidden" id="Sede" name="Sede" value="{{Sede}}">
+                                <input type="hidden" id="Servicio" name="Servicio" value="{{Servicio}}">
+                                <input type="hidden" id="Perfil" name="Perfil" value="{{Perfil}}">
+                                <input type="hidden" id="Username" name="Username" value="{{Username}}">
+                                <input type="hidden" id="Username_id" name="Username_id" value="{{Username_id}}">
+                                <input type="hidden" id="nombreSede" name="nombreSede" value="{{NombreSede}}">
+                                <input type="hidden" id="profesional" name="profesional" value="{{Profesional}}">
+                            </div>
+
+
+                            <span id="error" name="error" style="color:blue">{{Error}}</span>
+
+
+                            <div class="submit-row">
+                                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                                <input type="submit" value="BUSCAR PACIENTES">
+                            </div>
+                        </form>
+                        <!--   <div/> -->
+                        <!--    <tr /> -->
+
+                        <!-- fim formulario -->
+
+
+                        <!--    </table>  -->
+                    </div>
+                    </hr>
+
+
+                </div>
+
+            </div>
+
+        </div>
+
+        <!-- esta es la tabla  -->
+
+        <div class="row">
+            <div class="col-lg-12" style="background-color:LightGray;">
+
+
+                <div class="card-block">
+                    <div style="height: 300px; overflow: auto">
+                        <table class="table table-hover"
+                               style="height: 300px , background-color:LightGray; border: 2px solid black; border-radius: 10px; width:99%;">
+                            <thead>
+                            <th>Tipo Doc</th>
+                            <th>Documento</th>
+                            <th>Paciente</th>
+                            <th>Ingreso</th>
+                            <th>Fec.Ingreso</th>
+                            <th>Fec.Salida</th>
+                            <th>Servicio</th>
+                            <th>Dependencia</th>
+                            <th>Dx</th>
+
+
+                            </thead>
+                            {% for ingresos in Ingresos %}
+                            <tr>
+                                <td>{{ ingresos.tipoDoc }}</td>
+                                <td>{{ ingresos.Documento }}</td>
+                                <td>{{ ingresos.Nombre }}</td>
+                                <td>{{ ingresos.Consec }}</td>
+                                <td>{{ ingresos.FechaIngreso }}</td>
+                                <td>{{ ingresos.FechaSalida }}</td>
+                                <td>{{ ingresos.servicioNombreIng }}</td>
+                                <td>{{ ingresos.camaNombreIng }}</td>
+                                <td>{{ ingresos.DxActual }}</td>
+
+
+                            </tr>
+                            {% endfor %}
+
+                            <tbody>
+
+
+                            </tbody>
+
+                        </table>
+                    </div>
+
+
+                </div>
+
+
+            </div>
+
+
+        </div>
+
+
+        <!-- fin tabla -->
+
+    </article>
+    <!-- FIN INGRESO PACIENTES -->
+
+
+    <article id="CrearAdmision">
+        <center><h3>Creacion Admision</h3></center>
+
+
+  <!--  inicia modal -->
+
+        <div class="container">
+            <div class="card">
+
+
+                <div class="myForm">
+
+                    <form id="ModalCaptura" method="POST" onsubmit="CierraModal()">
+
+                        <div class="modal fade" id="usuariosModal" tabindex="-1"
+                             role="dialog" aria-labelledby="exampleModalLabel"
+                             aria-hidden="true">
+                            <div class="modal-dialog" role="document">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h5 class="modal-title" id="exampleModalLabel">Actualiza
+                                            Usuario</h5>
+                                        <button type="button" class="close" data-dismiss="modal"
+                                                aria-label="Close">
+                                            <span aria-hidden="true">&times;</span>
+                                        </button>
+                                    </div>
+                                    <div class="modal-body">
+
+
+                                        <div class="form-group">
+                                            <label for="tipoDoc1" class="col-form-label">Tipo Doc:</label>
+
+
+                                            <select class="form-control" id="tipoDoc1" name="tipoDoc1">
+                                                {% for tiposDocumento in TiposDocumento %}
+                                                <option value="{{tiposDocumento.id}}"> {{tiposDocumento.nombre}}
+                                                </option>
+                                                {% endfor %}
+                                            </select>
+
+                                        </div>
+
+
+                                        <div class="form-group">
+                                            <label for="documento" class="col-form-label">Documento:</label>
+                                            <input type="text" class="form-control" id="documento" name="documento"
+                                                   value="">
+                                        </div>
+
+                                        <div class="form-group">
+                                            <label for="nombre1" class="col-form-label"> Paciente :</label>
+
+                                            <input type="text" class="form-control" id="nombre1" name="nombre1"
+                                                   value="">
+                                        </div>
+
+                                        <div class="form-group">
+                                            <label for="genero" class="col-form-label">Genero:</label>
+                                            <select class="form-control" id="genero" name="genero">
+                                                <option value="M"> Masculino</option>
+                                                <option value="F"> Femenino</option>
+                                            </select>
+
+
+                                        </div>
+
+                                         <div class="form-group">
+                                            <label for="departamentos" class="col-form-label">Departamento:</label>
+
+
+                                            <select class="form-control" id="departamentos" name="departamentos">
+                                                {% for departamentos in Departamentos %}
+                                                <option value="{{departamentos.id}}"> {{departamentos.nombre}}
+                                                </option>
+                                                {% endfor %}
+                                            </select>
+
+                                        </div>
+
+                                         <div class="form-group">
+                                            <label for="ciudades" class="col-form-label">Ciudad:</label>
+
+
+                                            <select class="form-control" id="ciudades" name="ciudades">
+                                                {% for ciudades in Ciudades %}
+                                                <option value="{{ciudades.id}}"> {{ciudades.nombre}}
+                                                </option>
+                                                {% endfor %}
+                                            </select>
+
+                                        </div>
+
+
+                                        <div class="form-group">
+                                            <label for="direccion" class="col-form-label">Direccion:</label>
+                                            <input type="text" class="form-control" id="direccion" name="direccion"
+                                                   value="">
+                                        </div>
+
+                                        <div class="form-group">
+                                            <label for="telefono" class="col-form-label">Telefono:</label>
+                                            <input type="text" class="form-control" id="telefono" name="telefono"
+                                                   value="">
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="contacto" class="col-form-label">Contacto:</label>
+                                            <input type="text" class="form-control" id="contacto" name="contacto"
+                                                   value="">
+                                        </div>
+
+
+                                        <div class="form-group">
+                                            <label for="centrosc" class="col-form-label">Centros:</label>
+
+                                            <select class="form-control" id="centrosc" name="centrosc">
+                                                {% for centros in Centros %}
+                                                <option value="{{centros.id}}"> {{centros.nombre}}</option>
+                                                {% endfor %}
+                                            </select>
+
+
+                                        </div>
+
+
+                                        <div class="form-group">
+                                            <label for="tiposUsuario" class="col-form-label">Tipos Usuario:</label>
+
+                                            <select class="form-control" id="tiposUsuario" name="tiposUsuario">
+                                                {% for tiposUsuario in TiposUsuario %}
+                                                <option value="{{tiposUsuario.id}}"> {{tiposUsuario.nombre}}</option>
+                                                {% endfor %}
+                                            </select>
+
+                                        </div>
+
+
+                                    </div>
+                                    <div class="modal-footer">
+                                        <button type="button" class="btn btn-secondary" data-dismiss="modal"
+                                                onclick="CierraModal()">Close
+                                        </button>
+                                        <input type="button" class="btn btn-primary" value="save" onclick="AUsuario()">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+
+
+            </div>
+
+
+            <!-- fin modal  -->
+
+
+            <table class="table  " style="height: 100px; background-color:LightGray;  width:100%;">
+                <tr>
+                    <td>
+
+                    </td>
+                    <td>
+
+                    </td>
+                    <td>
+
+
+                        <table class="table  "
+                               style="height: 100px; background-color:LightGray; BORDERCOLOR=RED ; border: 8px solid black; border-color: #96D4D4;  width:99%;">
+
+
+                            <form class="form-inline" action="/crearAdmisionDef/" method="POST" id="grabacionForma">
+
+                                <input type="hidden" id="Sede" name="Sede" value="{{Sede}}">
+                                <input type="hidden" id="Servicio" name="Servicio" value="{{Servicio}}">
+                                <input type="hidden" id="Perfil" name="Perfil" value="{{Perfil}}">
+                                <input type="hidden" id="Username" name="Username" value="{{Username}}">
+                                <input type="hidden" id="Username_id" name="Username_id" value="{{Username_id}}">
+                                <input type="hidden" id="Profesional" name="Profesional" value="{{Username_id}}">
+                                <input type="hidden" id="nombreSede" name="nombreSede" value="{{Profesional}}">
+
+                                <!-- VARIABLESD DE COPIA PARA RESTAURAR DATOS -->
+
+                                <input type="hidden" id="bakbusServicio2" name="bakbusServicio2" value="">
+                                <input type="hidden" id="bakbusSubServicio2" name="bakbusSubServicio2" value="">
+                                <input type="hidden" id="bakdependenciasIngreso" name="bakdependenciasIngreso" value="">
+                                <input type="hidden" id="baktipoDoc" name="baktipoDoc" value="">
+                                <input type="hidden" id="bakbusDocumentoSel" name="bakbusDocumentoSel" value="">
+                                <input type="hidden" id="bakfechaIngreso" name="bakfechaIngreso" value="">
+                                <input type="hidden" id="bakdxIngreso" name="bakdxIngreso" value="">
+                                <input type="hidden" id="bakespecialidadesMedicosIngreso"
+                                       name="bakespecialidadesMedicosIngreso"
+                                       value="">
+                                <input type="hidden" id="bakmedicoIngreso" name="bakmedicoIngreso" value="">
+
+
+                                {% if crearAdmisionForm.errors %}
+                                <p style="color:Red;"> Revizar estos camos</p>
+
+                                {% endif %}
+
+
+                                <div class="form-row">
+                                    <div class="form-group col-md-4 ">
+
+
+                                        <label for="busServicio2"
+                                               class="col-form-label">Servicio:</label>
+                                        <select class="form-control" id="busServicio2" name="busServicio2" required>
+                                            {% for servicios in Servicios %}
+                                            <option value="{{servicios.id}}"> {{servicios.nombre}}</option>
+                                            {% endfor %}
+                                        </select>
+                                    </div>
+                                    <div class="form-group col-md-4 ">
+
+                                        <label for="busSubServicio2" class="col-form-label">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;SubServicios:</label>
+                                        <select class="form-control" id="busSubServicio2" name="busSubServicio2"
+                                                required>
+                                            {% for subServicios in SubServicios %}
+                                            <option value="{{subServicios.id}}"> {{subServicios.nombre}}</option>
+                                            {% endfor %}
+                                        </select>
+                                    </div>
+                                    <div class="form-group col-md-4 ">
+
+
+                                        <!--    {{ form.dependenciasIngreso.label }}
+                                            {{form.dependenciasIngreso}}
+                                        -->
+
+
+                                        <label for="dependenciasIngreso" class="col-form-label">Dependencias:</label>
+
+
+                                        <select class="form-control" id="dependenciasIngreso" name="dependenciasIngreso"
+                                                required>
+                                            {% for dependencias in Dependencias %}
+                                            <option value="{{dependencias.id}}"> {{dependencias.nombre}}</option>
+                                            {% endfor %}
+                                        </select>
+
+
+                                    </div>
+                                </div>
+
+
+                                <div class="form-row">
+
+                                    <div class="form-group col-md-3 ">
+
+
+                                        <!--   {{ form.tipoDoc.label }}
+                                           {{ form.tipoDoc }}  -->
+
+                                        <label for="tipoDoc" class="col-form-label">Tipo Doc:</label>
+
+
+                                        <select class="form-control" id="tipoDoc" name="tipoDoc" required>
+                                            {% for tiposDocumento in TiposDocumento %}
+                                            <option value="{{tiposDocumento.id}}"> {{tiposDocumento.nombre}}</option>
+                                            {% endfor %}
+                                        </select>
+
+
+                                    </div>
+                                    <div class="form-group col-md-3 ">
+
+                                        <label class="required"
+                                               for="busDocumentoSel">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Suministre
+                                            Documento:</label>
+
+                                        <input type="text" class="form-control" id="busDocumentoSel"
+                                               name="busDocumentoSel" required>
+
+                                    </div>
+                                    <div class="form-group col-md-3 ">
+
+                                        <label class="required"
+                                               for="banda">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;V e r i f i c a
+                                            r:</label>
+
+
+                                        <a href="*" role="button" class="btn btn-primary eBtn1" data-toggle="modal"
+                                           id="banda" name="banda"
+                                           onclick='findOneUsuario1()'> </a>
+                                    </div>
+                                    <div class="form-group col-md-3 ">
+                                        {{ form.fechaIngreso.label }}
+
+
+                                        <input type="datetime-local" class="form-control" id="fechaIngreso"
+                                               name="fechaIngreso" value=""> </input>
+                                             <!--  value="{{form.fechaIngreso }}"> </input>  -->
+
+                                    </div>
+
+                                </div>
+
+
+                                <div class="form-row">
+
+                                    <div class="form-group col-md-4 ">
+
+
+                                        <!--  {{ form.dxIngreso.label }}
+                                            {{ form.dxIngreso }}
+                                            -->
+
+                                        <label for="dxIngreso" class="col-form-label">Diagnosticos:</label>
+
+
+                                        <select class="form-control" id="dxIngreso" name="dxIngreso" required>
+                                            {% for diagnosticos in Diagnosticos %}
+                                            <option value="{{diagnosticos.id}}"> {{diagnosticos.nombre}}</option>
+                                            {% endfor %}
+                                        </select>
+
+
+                                    </div>
+
+                                    <div class="form-group col-md-4 ">
+
+                                        <label for="busEspecialidad" class="col-form-label">Especialidad:
+                                        </label>
+
+
+                                        <select class="form-control" id="busEspecialidad" name="busEspecialidad"
+                                                required>
+                                            {% for especialidades in Especialidades %}
+                                            <option value="{{especialidades.id}}"> {{especialidades.nombre}}</option>
+                                            {% endfor %}
+                                        </select>
+                                    </div>
+
+                                    <div class="form-group col-md-4 ">
+
+                                        <label for="medicoIngreso" class="col-form-label">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Medico:
+                                            &nbsp;&nbsp;&nbsp;</label>
+                                        <select class="form-control" id="medicoIngreso" name="medicoIngreso" required>
+                                            {% for medicos in Medicos %}
+                                            <option value="{{medicos.id}}"> {{medicos.nombre}}</option>
+                                            {% endfor %}
+                                        </select>
+                                    </div>
+
+                                </div>
+
+                                <center>
+
+                                    <span id="mensaje1" name="mensaje1"></span>
+                                    <input type="submit" id="guardarAdmision" name="guardarAdmision"
+                                           value="GUARDAR"></input>
+
+                                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+
+                                </center>
+
+
+                            </form>
+
+
+                            <form class="form-inline"  action="/Ingresos/"  method="POST" id="login-form"><input type="hidden" name="csrfmiddlewaretoken"
+                                                                       value="MJ1CwN7LHRoBZUnyQoPpHBnb4M3PwGYmsLJeNsN92l41zY9ZaUPztrhcMWyUTHxc">
+
+                                <input type="hidden" id="Sede" name="Sede" value="{{Sede}}">
+                                <input type="hidden" id="Servicio" name="Servicio" value="{{Servicio}}">
+                                <input type="hidden" id="Perfil" name="Perfil" value="{{Perfil}}">
+                                <input type="hidden" id="Username" name="Username" value="{{Username}}">
+                                <input type="hidden" id="Username_id" name="Username_id" value="{{Username_id}}">
+                                <input type="hidden" id="nombreSede" name="nombreSede" value="{{NombreSede}}">
+                                <input type="hidden" id="profesional" name="profesional" value="{{Profesional}}">
+
+
+                                <center>
+                                    <a href="#Ingresos">CANCELAR </a>
+
+                                    &nbsp;&nbsp; Colaborador : {{Documento}} {{ Profesional }}
+                                </center>
+
+                            </form>
+
+
+                        </table>
+                    </td>
+                    <td>
+                    </td>
+                    <td>
+
+                    </td>
+                <tr>
+            </table>
+
+
+        </div>
+
+
+
+        <!-- FIN CREAR ADMISION -->
+    </article>
+
+
+    <article id="Responsables">
+        <center><h3>Responsables</h3></center>
+    </article>
+
+
+    <article id="Abonos">
+        <center><h3>Abonos</h3></center>
+
+    </article>
+
+
+    <article id="CambioServicio">
+        <center><h3>Cambio de Servicio</h3></center>
+
+    </article>
+
+
+    <article id="Habitaciones">
+        <center><h3>Habitaciones</h3></center>
+
+    </article>
+
+
+    <article id="Autorizaciones">
+        <center><h3>Autorizaciones</h3></center>
+
+    </article>
+</div>
+
+
+{% endblock %}
+
+{% block footer %}
+
+<div class="wrap">
+    <ul class="tabs">
+        <li><a href="#CrearAdmision"><span class="fa-solid fa-user-doctor-message"></span> <span
+                class="tab-text"> </span> Crear Admision </a></li>
+        <li><a href="#Responsables"><span class="fa-solid fa-user-doctor-message"></span> <span
+                class="tab-text"> </span> Responsables </a></li>
+        <li><a href="#Abonos"><span class="fa-solid fa-user-doctor-message"></span> <span
+                class="tab-text"> </span> Abonos </a></li>
+        <li><a href="#CambioServicio"><span class="fa-solid fa-user-doctor-message"></span> <span
+                class="tab-text"> </span> Cambio de sercicio </a></li>
+        <li><a href="#Habitaciones"><span class="fa-solid fa-user-doctor-message"></span> <span
+                class="tab-text"> </span> Habitaciones </a></li>
+        <li><a href="#Autorizaciones"><span class="fa-solid fa-user-doctor-message"></span> <span
+                class="tab-text"> </span> Autorizaciones </a></li>
+    </ul>
+</div>
+
+{% endblock %}
